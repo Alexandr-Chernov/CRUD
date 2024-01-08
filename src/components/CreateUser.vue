@@ -23,23 +23,22 @@ export default defineComponent({
   },
   methods: {
     async createUser() {
-      const getMaxId = async (userList: User[]) => userList.reduce((maxId, user) => {
+      const getMaxId = (userList: User[]) => userList.reduce((maxId, user) => {
         const currentMaxId = maxId;
         if (user.id > currentMaxId) {
           return user.id;
         }
         return currentMaxId;
       }, 0);
-
       const newUser: User = {
-        id: await getMaxId(this.userList) + 1,
+        id: getMaxId(this.userList) + 1,
         name: this.username,
       };
       await this.$store.dispatch('pushEventList', {
         eventName: 'create',
         data: { newUser },
       });
-      await this.$store.dispatch('createUserByUser', newUser);
+      await this.$store.dispatch('createUserByUser', { user: newUser });
       this.$router.push('/');
     },
   },

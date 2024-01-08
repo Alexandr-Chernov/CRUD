@@ -6,7 +6,7 @@ interface Actions extends ActionTree<UserState, any> {
   getUserIndexById(context: any, id: number): User;
   changeUserByUser(context: any, user: User): void;
   deleteUserByUser(context: any, user: User): void;
-  createUserByUser(context: any, user: User): void;
+  createUserByUser(context: any, { user, lastIndex }: any): void;
 }
 
 const userIndexById = (state: any, id: number) => state
@@ -27,9 +27,13 @@ const actions: Actions = {
     userListBuffer[userIndexById(state, user.id)] = user;
     state.dispatch('saveUserList', userListBuffer);
   },
-  createUserByUser(state, user) {
+  createUserByUser(state, { user, lastIndex }) {
     const userListBuffer = state.getters.userList;
-    userListBuffer.push(user);
+    if (typeof lastIndex === 'number') {
+      userListBuffer.splice(lastIndex, 0, user);
+    } else {
+      userListBuffer.push(user);
+    }
     state.dispatch('saveUserList', userListBuffer);
   },
   deleteUserByUser(state, user) {

@@ -19,6 +19,6 @@ export default defineComponent({
 
 <style scoped>
 #app {
-  font-weight: normal;
+  font-family: Arial, sans-serif;
 }
 </style>
